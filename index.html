@@ -536,7 +536,7 @@ h1{
     <div><dt><span class="dot n"></span>Unanswered</dt><dd id="popBlank"></dd></div>
   </dl>
   <div class="pop-foot">
-    <p class="pop-next" id="popNext" hidden><span id="nextName"></span> starts in <strong id="nextSecs"></strong>. View the score sheet to stay here.</p>
+    <p class="pop-next" id="popNext" hidden><span id="nextName"></span> starts in <strong id="nextSecs"></strong>.</p>
     <button class="btn" id="nextGameBtn" type="button" hidden>Start Next Game Now</button>
     <button class="btn" id="popClose" type="button">View Score Sheet</button>
   </div>
@@ -557,7 +557,7 @@ const PAUSE_WRONG = 2200;                // longer, so students can see the corr
 const PAUSE_TIMEUP = 1200;
 const NEXT_GAME_URL = "https://backendtlh-developer.github.io/car-logo-quiz/";  // opens when the quiz ends. Leave empty ("") to turn this off.
 const NEXT_GAME_NAME = "Car & Brand Logo Quiz";
-const NEXT_GAME_DELAY = 10;              // seconds the score stays on screen before the next game opens
+const NEXT_GAME_DELAY = 3;               // seconds the score shows before the next game opens by itself (0 = at once)
 
 /* ===================== QUESTIONS =====================
    To change a question, edit its text below. "answer" must match one option exactly.
@@ -795,6 +795,7 @@ function setUpPage() {
   $("nextName").textContent = NEXT_GAME_NAME;
   $("sheetNextGame").hidden = !NEXT_GAME_URL;
   $("popClose").classList.toggle("btn-quiet", !!NEXT_GAME_URL);
+  $("popClose").hidden = !!NEXT_GAME_URL;   // the next game always follows, so the popup has no close button
 }
 
 /* ---------- Start ---------- */
@@ -984,7 +985,7 @@ function showResults() {
   showView("results");
   $("resultTitle").focus({ preventScroll: true });
   openScorePopup();
-  if ($("scorePop").open) beginNextGameCountdown();
+  beginNextGameCountdown();
   countUp(correct);
 }
 
@@ -1011,6 +1012,7 @@ function countUp(target) {
 function beginNextGameCountdown() {
   if (!NEXT_GAME_URL) return;
   let left = NEXT_GAME_DELAY;
+  if (left <= 0) { startNextGame(); return; }
   const show = () => { $("nextSecs").textContent = left === 1 ? "1 second" : left + " seconds"; };
   show();
   $("popNext").hidden = false;
@@ -1053,7 +1055,7 @@ document.addEventListener("keydown", e => {
 $("startBtn").addEventListener("click", startCompetition);
 $("nextBtn").addEventListener("click", nextParticipant);
 $("popClose").addEventListener("click", () => $("scorePop").close());
-$("scorePop").addEventListener("close", stopNextGameCountdown);
+$("scorePop").addEventListener("cancel", e => { if (nextGameTimer) e.preventDefault(); });   // Esc cannot stop the next game
 $("nextGameBtn").addEventListener("click", startNextGame);
 $("sheetNextGame").addEventListener("click", startNextGame);
 document.querySelectorAll(".fsBtn").forEach(b => b.addEventListener("click", toggleFullScreen));
