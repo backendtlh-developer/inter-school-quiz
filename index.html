@@ -363,6 +363,13 @@ h1{
 .pop-stats dd{margin:2px 0 0;font-size:clamp(1.6rem,3.6vh,2rem);font-weight:800;line-height:1.1;}
 .pop-foot{padding:0 20px clamp(14px,2.6vh,22px);}
 .pop-foot .btn{min-height:56px;}
+.pop-foot{display:grid;gap:10px;}
+.pop-next{margin:0 0 2px;text-align:center;font-size:1.05rem;line-height:1.35;color:#1E3A5C;}
+.pop-next strong{font-variant-numeric:tabular-nums;}
+.btn[hidden]{display:none;}
+.btn.btn-quiet{background:#fff;color:var(--navy);box-shadow:inset 0 0 0 2px var(--rule);}
+@media (hover:hover){.btn.btn-quiet:hover{background:var(--tint);}}
+#results .start-row{display:grid;gap:10px;}
 
 /* Phones and small tablets */
 @media (max-width:759px){
@@ -510,6 +517,7 @@ h1{
     </table>
     <div class="start-row">
       <button class="btn" id="nextBtn" type="button">Next Participant</button>
+      <button class="btn btn-quiet" id="sheetNextGame" type="button" hidden>Start Next Game</button>
     </div>
   </div>
 </section>
@@ -528,6 +536,8 @@ h1{
     <div><dt><span class="dot n"></span>Unanswered</dt><dd id="popBlank"></dd></div>
   </dl>
   <div class="pop-foot">
+    <p class="pop-next" id="popNext" hidden><span id="nextName"></span> starts in <strong id="nextSecs"></strong>. View the score sheet to stay here.</p>
+    <button class="btn" id="nextGameBtn" type="button" hidden>Start Next Game Now</button>
     <button class="btn" id="popClose" type="button">View Score Sheet</button>
   </div>
 </dialog>
@@ -545,6 +555,9 @@ const COUNT_IN = 3;                      // "Get ready" countdown before the fir
 const PAUSE_CORRECT = 1300;              // milliseconds before the next question
 const PAUSE_WRONG = 2200;                // longer, so students can see the correct answer
 const PAUSE_TIMEUP = 1200;
+const NEXT_GAME_URL = "https://backendtlh-developer.github.io/car-logo-quiz/";  // opens when the quiz ends. Leave empty ("") to turn this off.
+const NEXT_GAME_NAME = "Car & Brand Logo Quiz";
+const NEXT_GAME_DELAY = 10;              // seconds the score stays on screen before the next game opens
 
 /* ===================== QUESTIONS =====================
    To change a question, edit its text below. "answer" must match one option exactly.
@@ -657,6 +670,7 @@ let startedAt = 0;
 let ticker = null;
 let lastSecs = null;
 let popupTimer = null;
+let nextGameTimer = null;
 
 function shuffled(list) {
   const a = [...list];
@@ -778,6 +792,9 @@ function setUpPage() {
     $("rules").appendChild(li);
   });
   updateFullScreenButtons();
+  $("nextName").textContent = NEXT_GAME_NAME;
+  $("sheetNextGame").hidden = !NEXT_GAME_URL;
+  $("popClose").classList.toggle("btn-quiet", !!NEXT_GAME_URL);
 }
 
 /* ---------- Start ---------- */
@@ -967,6 +984,7 @@ function showResults() {
   showView("results");
   $("resultTitle").focus({ preventScroll: true });
   openScorePopup();
+  if ($("scorePop").open) beginNextGameCountdown();
   countUp(correct);
 }
 
@@ -989,7 +1007,37 @@ function countUp(target) {
   })(begin);
 }
 
+/* ---------- Next game ---------- */
+function beginNextGameCountdown() {
+  if (!NEXT_GAME_URL) return;
+  let left = NEXT_GAME_DELAY;
+  const show = () => { $("nextSecs").textContent = left === 1 ? "1 second" : left + " seconds"; };
+  show();
+  $("popNext").hidden = false;
+  $("nextGameBtn").hidden = false;
+  clearInterval(nextGameTimer);
+  nextGameTimer = setInterval(() => {
+    left--;
+    if (left <= 0) { startNextGame(); return; }
+    show();
+  }, 1000);
+}
+
+function stopNextGameCountdown() {
+  clearInterval(nextGameTimer);
+  nextGameTimer = null;
+  $("popNext").hidden = true;
+  $("nextGameBtn").hidden = true;
+}
+
+function startNextGame() {
+  clearInterval(nextGameTimer);
+  nextGameTimer = null;
+  if (NEXT_GAME_URL) location.assign(NEXT_GAME_URL);
+}
+
 function nextParticipant() {
+  stopNextGameCountdown();
   showView("welcome");
   $("startBtn").focus({ preventScroll: true });
 }
@@ -1005,6 +1053,9 @@ document.addEventListener("keydown", e => {
 $("startBtn").addEventListener("click", startCompetition);
 $("nextBtn").addEventListener("click", nextParticipant);
 $("popClose").addEventListener("click", () => $("scorePop").close());
+$("scorePop").addEventListener("close", stopNextGameCountdown);
+$("nextGameBtn").addEventListener("click", startNextGame);
+$("sheetNextGame").addEventListener("click", startNextGame);
 document.querySelectorAll(".fsBtn").forEach(b => b.addEventListener("click", toggleFullScreen));
 document.addEventListener("fullscreenchange", updateFullScreenButtons);
 document.addEventListener("webkitfullscreenchange", updateFullScreenButtons);
