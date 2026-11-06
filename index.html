@@ -539,8 +539,8 @@ h1{
 /* ===================== SETTINGS YOU CAN CHANGE ===================== */
 const EVENT_NAME = "Inter-School Quiz Competition";
 const ORGANISER = "The Learner's Hub";   // shown as "Conducted by ...". Leave empty ("") to hide the name and logo.
-const TIME_PER_QUESTION = 15;            // seconds for each question
-const PER_GROUP = 5;                     // questions each student gets from every subject and level (5 x 4 groups = 20)
+const TIME_PER_QUESTION = 20;            // seconds for each question
+const QUESTIONS_PER_STUDENT = 6;         // how many questions each student gets, shared equally between the subjects
 const COUNT_IN = 3;                      // "Get ready" countdown before the first question, in seconds
 const PAUSE_CORRECT = 1300;              // milliseconds before the next question
 const PAUSE_WRONG = 2200;                // longer, so students can see the correct answer
@@ -548,9 +548,9 @@ const PAUSE_TIMEUP = 1200;
 
 /* ===================== QUESTIONS =====================
    To change a question, edit its text below. "answer" must match one option exactly.
-   Every attempt picks PER_GROUP questions at random from each subject and level,
+   Every attempt picks QUESTIONS_PER_STUDENT questions at random from this list,
    so each student gets a different set. Questions and options are then shuffled.
-   You can add more questions to any group. */
+   You can add more questions to the list. */
 const QUESTIONS = [
   /* Commerce: basic */
   { subject: "Commerce", level: "Basic",
@@ -635,171 +635,7 @@ const QUESTIONS = [
   { subject: "General Knowledge", level: "Intermediate",
     q: "Silent Valley National Park is located in which district of Kerala?",
     options: ["Idukki", "Palakkad", "Wayanad", "Thrissur"],
-    answer: "Palakkad" },
-  /* Commerce: more basic */
-  { subject: "Commerce", level: "Basic",
-    q: "Which book records all cash receipts and cash payments?",
-    options: ["Purchases book", "Journal proper", "Cash book", "Sales book"],
-    answer: "Cash book" },
-  { subject: "Commerce", level: "Basic",
-    q: "The amount the owner invests in a business is called:",
-    options: ["Drawings", "Capital", "Revenue", "Creditors"],
-    answer: "Capital" },
-  { subject: "Commerce", level: "Basic",
-    q: "A person who owes money to a business is called a:",
-    options: ["Creditor", "Proprietor", "Supplier", "Debtor"],
-    answer: "Debtor" },
-  { subject: "Commerce", level: "Basic",
-    q: "What does GST stand for?",
-    options: ["General Sales Tax", "Government Service Tax", "Goods and Services Tax", "Goods and Supply Tax"],
-    answer: "Goods and Services Tax" },
-  { subject: "Commerce", level: "Basic",
-    q: "Which is the first function of management?",
-    options: ["Organising", "Planning", "Staffing", "Controlling"],
-    answer: "Planning" },
-  { subject: "Commerce", level: "Basic",
-    q: "What does ATM stand for?",
-    options: ["Any Time Money", "Automatic Transfer Machine", "Automated Transaction Method", "Automated Teller Machine"],
-    answer: "Automated Teller Machine" },
-  { subject: "Commerce", level: "Basic",
-    q: "Which of these is a fixed asset?",
-    options: ["Cash", "Debtors", "Machinery", "Closing stock"],
-    answer: "Machinery" },
-  { subject: "Commerce", level: "Basic",
-    q: "Which is the central bank of India?",
-    options: ["State Bank of India", "Reserve Bank of India", "NABARD", "SEBI"],
-    answer: "Reserve Bank of India" },
-  { subject: "Commerce", level: "Basic",
-    q: "A business owned and run by one person is called a:",
-    options: ["Partnership firm", "Joint stock company", "Cooperative society", "Sole proprietorship"],
-    answer: "Sole proprietorship" },
-  { subject: "Commerce", level: "Basic",
-    q: "Which document does a seller send a buyer showing the goods sold and the amount due?",
-    options: ["Cheque", "Invoice", "Receipt", "Debit note"],
-    answer: "Invoice" },
-  /* Commerce: more intermediate */
-  { subject: "Commerce", level: "Intermediate",
-    q: "What is the golden rule for a personal account?",
-    options: ["Debit what comes in, credit what goes out", "Debit all expenses, credit all incomes", "Debit the receiver, credit the giver", "Debit the giver, credit the receiver"],
-    answer: "Debit the receiver, credit the giver" },
-  { subject: "Commerce", level: "Intermediate",
-    q: "Which of these errors will not make a trial balance disagree?",
-    options: ["Posting an amount to the wrong side", "Wrong totalling of an account", "Posting only one side of an entry", "Complete omission of a transaction"],
-    answer: "Complete omission of a transaction" },
-  { subject: "Commerce", level: "Intermediate",
-    q: "Under the written down value method, depreciation is calculated on the:",
-    options: ["Original cost every year", "Reduced book value each year", "Market value of the asset", "Scrap value of the asset"],
-    answer: "Reduced book value each year" },
-  { subject: "Commerce", level: "Intermediate",
-    q: "Prepaid expenses are shown in the balance sheet as a:",
-    options: ["Current liability", "Fixed asset", "Current asset", "Part of capital"],
-    answer: "Current asset" },
-  { subject: "Commerce", level: "Intermediate",
-    q: "Who proposed the hierarchy of needs theory of motivation?",
-    options: ["Frederick Herzberg", "Douglas McGregor", "F. W. Taylor", "Abraham Maslow"],
-    answer: "Abraham Maslow" },
-  { subject: "Commerce", level: "Intermediate",
-    q: "Which document invites the public to buy a company's shares?",
-    options: ["Memorandum of association", "Prospectus", "Articles of association", "Certificate of incorporation"],
-    answer: "Prospectus" },
-  { subject: "Commerce", level: "Intermediate",
-    q: "The market for short-term funds of up to one year is called the:",
-    options: ["Capital market", "Primary market", "Money market", "Secondary market"],
-    answer: "Money market" },
-  { subject: "Commerce", level: "Intermediate",
-    q: "What is the minimum number of members needed to form a public company in India?",
-    options: ["2", "5", "50", "7"],
-    answer: "7" },
-  { subject: "Commerce", level: "Intermediate",
-    q: "How is gross profit calculated?",
-    options: ["Net sales \u2212 Operating expenses", "Net sales \u2212 Cost of goods sold", "Net profit + Capital", "Closing stock \u2212 Opening stock"],
-    answer: "Net sales \u2212 Cost of goods sold" },
-  { subject: "Commerce", level: "Intermediate",
-    q: "Which management function compares actual performance with planned standards?",
-    options: ["Staffing", "Directing", "Controlling", "Planning"],
-    answer: "Controlling" },
-  /* General Knowledge: more basic */
-  { subject: "General Knowledge", level: "Basic",
-    q: "What is the national animal of India?",
-    options: ["Lion", "Elephant", "Leopard", "Tiger"],
-    answer: "Tiger" },
-  { subject: "General Knowledge", level: "Basic",
-    q: "Which is the largest ocean in the world?",
-    options: ["Atlantic Ocean", "Pacific Ocean", "Indian Ocean", "Arctic Ocean"],
-    answer: "Pacific Ocean" },
-  { subject: "General Knowledge", level: "Basic",
-    q: "What is the chemical symbol for gold?",
-    options: ["Ag", "Gd", "Au", "Go"],
-    answer: "Au" },
-  { subject: "General Knowledge", level: "Basic",
-    q: "Which gas do plants absorb from the air for photosynthesis?",
-    options: ["Oxygen", "Nitrogen", "Hydrogen", "Carbon dioxide"],
-    answer: "Carbon dioxide" },
-  { subject: "General Knowledge", level: "Basic",
-    q: "Who was the first Prime Minister of India?",
-    options: ["Sardar Vallabhbhai Patel", "Jawaharlal Nehru", "Dr. Rajendra Prasad", "Lal Bahadur Shastri"],
-    answer: "Jawaharlal Nehru" },
-  { subject: "General Knowledge", level: "Basic",
-    q: "In which year did India become a republic?",
-    options: ["1947", "1949", "1950", "1952"],
-    answer: "1950" },
-  { subject: "General Knowledge", level: "Basic",
-    q: "What is the capital of Kerala?",
-    options: ["Kochi", "Kozhikode", "Thrissur", "Thiruvananthapuram"],
-    answer: "Thiruvananthapuram" },
-  { subject: "General Knowledge", level: "Basic",
-    q: "Which planet is known as the Red Planet?",
-    options: ["Venus", "Mars", "Jupiter", "Mercury"],
-    answer: "Mars" },
-  { subject: "General Knowledge", level: "Basic",
-    q: "Who is popularly known as the Father of the Nation in India?",
-    options: ["Jawaharlal Nehru", "Subhas Chandra Bose", "Mahatma Gandhi", "Bhagat Singh"],
-    answer: "Mahatma Gandhi" },
-  { subject: "General Knowledge", level: "Basic",
-    q: "How many bones are there in an adult human body?",
-    options: ["186", "216", "306", "206"],
-    answer: "206" },
-  /* General Knowledge: more intermediate */
-  { subject: "General Knowledge", level: "Intermediate",
-    q: "Who was the first Indian citizen to travel into space?",
-    options: ["Kalpana Chawla", "Rakesh Sharma", "Sunita Williams", "Vikram Sarabhai"],
-    answer: "Rakesh Sharma" },
-  { subject: "General Knowledge", level: "Intermediate",
-    q: "In which year was the state of Kerala formed?",
-    options: ["1947", "1950", "1956", "1960"],
-    answer: "1956" },
-  { subject: "General Knowledge", level: "Intermediate",
-    q: "In which year did the Dandi March take place?",
-    options: ["1919", "1942", "1947", "1930"],
-    answer: "1930" },
-  { subject: "General Knowledge", level: "Intermediate",
-    q: "Which is the smallest bone in the human body?",
-    options: ["Incus", "Stapes", "Malleus", "Patella"],
-    answer: "Stapes" },
-  { subject: "General Knowledge", level: "Intermediate",
-    q: "What is the chemical formula of common salt?",
-    options: ["KCl", "HCl", "NaCl", "NaOH"],
-    answer: "NaCl" },
-  { subject: "General Knowledge", level: "Intermediate",
-    q: "Which Article of the Constitution of India gives the right to constitutional remedies?",
-    options: ["Article 14", "Article 19", "Article 21", "Article 32"],
-    answer: "Article 32" },
-  { subject: "General Knowledge", level: "Intermediate",
-    q: "Who wrote the book The Discovery of India?",
-    options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Rabindranath Tagore", "Dr. B. R. Ambedkar"],
-    answer: "Jawaharlal Nehru" },
-  { subject: "General Knowledge", level: "Intermediate",
-    q: "In which city is the headquarters of the United Nations?",
-    options: ["Geneva", "Paris", "New York", "Vienna"],
-    answer: "New York" },
-  { subject: "General Knowledge", level: "Intermediate",
-    q: "Which organ of the human body produces insulin?",
-    options: ["Liver", "Kidney", "Spleen", "Pancreas"],
-    answer: "Pancreas" },
-  { subject: "General Knowledge", level: "Intermediate",
-    q: "Who was the first woman President of India?",
-    options: ["Indira Gandhi", "Pratibha Patil", "Droupadi Murmu", "Sarojini Naidu"],
-    answer: "Pratibha Patil" }
+    answer: "Palakkad" }
 ];
 
 /* ===================== QUIZ LOGIC ===================== */
@@ -831,18 +667,13 @@ function shuffled(list) {
   return a;
 }
 
-function questionGroups() {
-  const groups = new Map();
-  QUESTIONS.forEach(item => {
-    const key = item.subject + "|" + item.level;
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push(item);
-  });
-  return [...groups.values()];
-}
-
 function pickQuestions() {
-  return questionGroups().flatMap(group => shuffled(group).slice(0, PER_GROUP));
+  const subjects = [...new Set(QUESTIONS.map(item => item.subject))];
+  const perSubject = Math.floor(QUESTIONS_PER_STUDENT / subjects.length);
+  const picked = subjects.flatMap(subject =>
+    shuffled(QUESTIONS.filter(item => item.subject === subject)).slice(0, perSubject));
+  const rest = shuffled(QUESTIONS.filter(item => !picked.includes(item)));
+  return picked.concat(rest.slice(0, QUESTIONS_PER_STUDENT - picked.length));
 }
 
 function showView(id) {
